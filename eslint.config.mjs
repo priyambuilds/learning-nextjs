@@ -1,65 +1,57 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
 import js from "@eslint/js";
-import { globalIgnores } from "eslint/config";
-import importPlugin from "eslint-plugin-import";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import unicorn from "eslint-plugin-unicorn";
+import betterTailwind from "eslint-plugin-better-tailwindcss";
 
 const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-  plugins: {
-    import: importPlugin,
-  },
+  baseDirectory: import.meta.dirname,
 });
 
-const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
-  globalIgnores(["components/ui/**"]),
+export default [
+  // Baseline recommended JS rules
+  js.configs.recommended,
+
+  // Next.js & TypeScript best practices and Prettier harmony
+  ...compat.extends("next/core-web-vitals", "next/typescript", "prettier"),
+
+  // unicorn: modern JS/TS best practices
   {
-    settings: {
-      "readable-tailwind": {
-        entryPoint: "src/global.css",
-        tailwindConfig: "tailwind.config.js",
-      },
-    },
+    plugins: { unicorn },
     rules: {
-      "no-undef": "off",
-      "import/order": [
+      "unicorn/prevent-abbreviations": "off", // less strict for framework naming
+      "unicorn/filename-case": [
         "error",
         {
-          groups: [
-            "builtin",
-            "external",
-            "internal",
-            ["sibling", "parent"],
-            "index",
-            "object",
-          ],
-          "newlines-between": "always",
-          pathGroups: [
-            {
-              pattern: "@app/**",
-              group: "external",
-              position: "after",
-            },
-          ],
-          pathGroupsExcludedImportTypes: ["builtin"],
-          alphabetize: { order: "asc", caseInsensitive: true },
+          cases: {
+            camelCase: true,
+            pascalCase: true,
+          },
         },
       ],
     },
   },
+
+  // Tailwind v4 compatible linting
+  betterTailwind.configs.recommended,
+
+  // Ignores, project rules, settings
   {
-    files: ["*.ts", "*.tsx"],
+    ignores: ["components/ui/**", "node_modules/**", ".next/**"],
     rules: {
       "no-undef": "off",
+      // add further global overrides as desired
+    },
+  },
+
+  // TypeScript-specific tweaks
+  {
+    files: ["**/*.ts", "**/*.tsx"],
+    rules: {
+      "no-undef": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+      ],
     },
   },
 ];
-
-export default eslintConfig;
