@@ -3,61 +3,35 @@
 import React from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
-import { signIn } from "@auth";
 import ROUTES from "@/constants/routs";
+import { toast } from "sonner";
+import { useSearchParams } from "next/navigation";
+import { signIn } from "next-auth/react"; // Use the classic next-auth/react for this usage!
 
 const SocialAuthForm = () => {
   const buttonClassName =
     "flex-1 px-4 py-3.5 rounded-2 min-h-12 text-dark-200_light800 background-dark400_light900 body-medium";
 
-  type Provider = "google" | "github";
+  // Get error message from query params using Next.js hook
+  const searchParams = useSearchParams();
+  const error = searchParams.get("error");
 
-  const handleSignIn = async (provider: "google" | "github") => {
-    const loadingId = toast.loading("Redirecting to sign-in...");
-    try {
-      const result = await signIn(provider, {
-        callbackUrl: ROUTES.HOME,
-        redirect: false,
-      });
-      toast.dismiss(loadingId);
-
-      if (result?.error) {
-        toast.error("Sign-in Failed", {
-          description:
-            result.error === "OAuthAccountNotLinked"
-              ? "Please sign in using the account you originally used."
-              : result.error ||
-                "Unable to sign in. Try again or use another method.",
-        });
-        return false;
-      }
-
-      if (result?.ok) {
-        toast.success("Signed in!", {
-          description: "Welcome back!",
-        });
-        window.location.href = result.url ?? "/";
-      }
-      return true;
-    } catch (error) {
-      toast.dismiss(loadingId);
-      toast.error("Sign-in Error", {
+  React.useEffect(() => {
+    if (error) {
+      toast.error("Sign-in Failed", {
         description:
-          error instanceof Error
-            ? error.message
-            : "An unexpected error occurred during sign-in.",
+          error === "OAuthAccountNotLinked"
+            ? "Please sign in using the account you originally used."
+            : error,
       });
-      console.error(error);
-      return false;
     }
-  };
+  }, [error]);
 
   return (
     <div className="flex flex-wrap gap-2.5 mt-10">
       <Button
         className={buttonClassName}
-        onClick={() => handleSignIn("google")}
+        onClick={() => signIn("google", { callbackUrl: ROUTES.HOME })}
       >
         <Image
           src="/icons/google.svg"
@@ -65,22 +39,22 @@ const SocialAuthForm = () => {
           width={20}
           height={20}
           className="mr-h-12"
-        ></Image>
+        />
         <span className="text-dark-200_light800 body-medium">
           Login with Google
         </span>
       </Button>
       <Button
         className={buttonClassName}
-        onClick={() => handleSignIn("github")}
+        onClick={() => signIn("github", { callbackUrl: ROUTES.HOME })}
       >
         <Image
           src="/icons/github.svg"
-          alt="google"
+          alt="github"
           width={20}
           height={20}
           className="invert-colors mr-h-12"
-        ></Image>
+        />
         <span className="text-dark-200_light800 body-medium">
           Login with Github
         </span>
