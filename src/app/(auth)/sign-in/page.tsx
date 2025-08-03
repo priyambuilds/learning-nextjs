@@ -1,38 +1,47 @@
-// app/sign-in/page.tsx
-"use client";
+// src/app/(auth)/sign-in/page.tsx
+import { Metadata } from "next";
+import SignInForm from "./sign-in-form";
 
-import React from "react";
-import SocialAuthForm from "@/components/forms/SocialAuthForm";
-import Image from "next/image";
-import AuthForm from "@/components/forms/AuthForm";
-import { SignInSchema } from "@/lib/validations";
+export const metadata: Metadata = {
+  title: "Sign In | Your App Name",
+  description:
+    "Sign in to your account to access your dashboard and manage your data.",
+  robots: "noindex, nofollow", // Prevent indexing of auth pages
+};
 
 export default function SignInPage() {
   return (
-    <div className="space-y-4 p-6 border rounded-lg w-full max-w-md">
-      <div className="flex justify-between items-center gap-2">
-        <div className="space-y-2 5">
-          <h1 className="text-dark100_light900 h2-bold">Join Devflow</h1>
-          <p className="text-dark500_light400 paragraph-regular">
-            To get your quesitions answered
-          </p>
+    <div className="flex flex-col min-h-screen">
+      {/* Main Content */}
+      <main className="flex flex-1 justify-center items-center px-4 sm:px-6 lg:px-8 py-12">
+        <div className="space-y-8 w-full max-w-md">
+          {/* Header */}
+          <div className="text-center">
+            <h1 className="font-bold text-gray-900 dark:text-white text-3xl tracking-tight">
+              Welcome back
+            </h1>
+            <p className="mt-2 text-gray-600 dark:text-gray-400 text-sm">
+              Sign in to your account to continue
+            </p>
+          </div>
+
+          {/* Sign In Form */}
+          <SignInForm />
+
+          {/* Sign Up Link */}
+          <div className="text-center">
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
+              Don't have an account?{" "}
+              <a
+                href="/sign-up"
+                className="font-medium text-blue-600 hover:text-blue-500 dark:hover:text-blue-300 dark:text-blue-400 transition-colors"
+              >
+                Sign up for free
+              </a>
+            </p>
+          </div>
         </div>
-        <Image
-          src="/images/site-logo.svg"
-          alt="logo"
-          width={50}
-          height={50}
-          className="object-contain"
-        ></Image>
-      </div>
-      <AuthForm
-        formType="SIGN_IN"
-        schema={SignInSchema}
-        defaultValues={{ email: "", password: "" }}
-        onSubmit={(data) => Promise.resolve({ success: true, data })}
-      />
-      {/* Any custom email/password form or text here */}
-      <SocialAuthForm />
+      </main>
     </div>
   );
 }
