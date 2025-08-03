@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import ROUTES from "@/constants/routs";
+import ROUTES from "@/constants/routes";
 import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
