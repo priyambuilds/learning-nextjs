@@ -2,8 +2,6 @@ import React from "react";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
-  SheetHeader,
   SheetTitle,
   SheetTrigger,
   SheetClose,
@@ -50,18 +48,16 @@ const MobileNavigation = () => {
           </SheetClose>
           <div className="flex flex-col gap-3">
             <SheetClose>
-              <Link href={ROUTES.SIGN_IN}>
-                <Button className="shadow-none px-4 py-3 rounded-lg w-full min-h-[41px] small-medium btn-secondary">
+              <Button className="shadow-none px-4 py-3 rounded-lg w-full min-h-[41px] small-medium btn-secondary">
+                <Link href={ROUTES.SIGN_IN}>
                   <span className="primary-text-gradient">Log In</span>
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </SheetClose>
             <SheetClose>
-              <Link href={ROUTES.SIGN_UP}>
-                <Button className="shadow-none px-4 py-3 light-border-2 rounded-lg w-full min-h-[41px] text-dark400_light900 small-medium btn-tertiary">
-                  Sign Up
-                </Button>
-              </Link>
+              <Button className="shadow-none px-4 py-3 light-border-2 rounded-lg w-full min-h-[41px] text-dark400_light900 small-medium btn-tertiary">
+                <Link href={ROUTES.SIGN_UP}>Sign Up</Link>
+              </Button>
             </SheetClose>
           </div>
         </div>
