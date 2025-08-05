@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import ROUTES from "@/constants/routes";
 import LocalSearch from "@/components/search/LocalSearch";
+import HomeFilter from "@/components/filter/HomeFilter";
 
 export const metadata: Metadata = {
   title: "Dev Overflow | Home",
@@ -11,7 +12,18 @@ export const metadata: Metadata = {
     "Discover different programming questions and answers with recommendations from the community.",
 };
 
-const Home = async () => {
+const questions = [];
+
+interface SearchParams {
+  searchParams: Promise<{ [key: string]: string }>;
+}
+
+const Home = async ({ searchParams }: SearchParams) => {
+  const { query = "", filter = "" } = await searchParams;
+
+  const filteredQuestions = questions.filter((question) =>
+    question.title.toLowerCase().includes(query.toLowerCase())
+  );
   return (
     <>
       <section className="flex sm:flex-row flex-col-reverse justify-between sm:items-center gap-4 w-full">
@@ -31,14 +43,11 @@ const Home = async () => {
           otherClasses="flex-1"
         />
       </section>
-      HomeFilter
+      <HomeFilter />
       <div className="flex flex-col gap-6 mt-10 w-full">
-        <p>Question Card 1</p>
-        <p>Question Card 2</p>
-        <p>Question Card 1</p>
-        <p>Question Card 2</p>
-        <p>Question Card 1</p>
-        <p>Question Card 2</p>
+        {filteredQuestions.map((question) => (
+          <h1 key={question._id}>{question.title}</h1>
+        ))}
       </div>
     </>
   );

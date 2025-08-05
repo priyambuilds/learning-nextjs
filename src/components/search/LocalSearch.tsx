@@ -1,41 +1,91 @@
 "use client";
 
-import React from "react";
-import { Input } from "../ui/input";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+
+import { formUrlQuery, removeKeysFromUrlQuery } from "@/lib/url";
+
+import { Input } from "../ui/input";
 
 interface Props {
   route: string;
   imgSrc: string;
   placeholder: string;
   otherClasses?: string;
+  iconPosition?: "left" | "right";
 }
 
-const LocalSearch = ({ route, imgSrc, placeholder, otherClasses }: Props) => {
-  const searhParams = useSearchParams();
-  const query = searhParams.get("query") || "";
-  const [searchQuery, setSearchQuery] = React.useState(query);
+const LocalSearch = ({
+  route,
+  imgSrc,
+  placeholder,
+  otherClasses,
+  iconPosition = "left",
+}: Props) => {
+  const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const query = searchParams.get("query") || "";
+
+  const [searchQuery, setSearchQuery] = useState(query);
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (searchQuery) {
+        const newUrl = formUrlQuery({
+          params: searchParams.toString(),
+          key: "query",
+          value: searchQuery,
+        });
+
+        router.push(newUrl, { scroll: false });
+      } else {
+        if (pathname === route) {
+          const newUrl = removeKeysFromUrlQuery({
+            params: searchParams.toString(),
+            keysToRemove: ["query"],
+          });
+
+          router.push(newUrl, { scroll: false });
+        }
+      }
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery, router, route, searchParams, pathname]);
 
   return (
     <div
-      className={`flex items-center gap-4 px-4 rounded-[10px] min-h-[56px] background-light800_darkgradient grow ${otherClasses}`}
+      className={`background-light800_darkgradient flex min-h-[56px] grow items-center gap-4 rounded-[10px] px-4 ${otherClasses}`}
     >
-      LocalSearch
-      <Image
-        src={imgSrc}
-        alt="search"
-        width={24}
-        height={24}
-        className="cursor-pointer"
-      />
+      {iconPosition === "left" && (
+        <Image
+          src={imgSrc}
+          width={24}
+          height={24}
+          alt="Search"
+          className="cursor-pointer"
+        />
+      )}
+
       <Input
         type="text"
         placeholder={placeholder}
         value={searchQuery}
-        className="shadow-none border-none outline-none text-dark400_light700 paragraph-regular no-focus placeholder"
         onChange={(e) => setSearchQuery(e.target.value)}
-      ></Input>
+        className="shadow-none border-none outline-none text-dark400_light700 paragraph-regular no-focus placeholder"
+      />
+
+      {iconPosition === "right" && (
+        <Image
+          src={imgSrc}
+          width={15}
+          height={15}
+          alt="Search"
+          className="cursor-pointer"
+        />
+      )}
     </div>
   );
 };
