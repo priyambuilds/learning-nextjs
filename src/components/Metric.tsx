@@ -11,7 +11,6 @@ interface Props {
   textStyles?: string;
   imgStyles?: string;
   isAuthor?: boolean;
-  createdAt?: Date;
 }
 
 const Metric = ({
@@ -23,7 +22,6 @@ const Metric = ({
   textStyles,
   isAuthor,
   imgStyles,
-  createdAt,
 }: Props) => {
   const metricContent = (
     <>
