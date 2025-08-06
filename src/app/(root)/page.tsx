@@ -5,6 +5,7 @@ import Link from "next/link";
 import ROUTES from "@/constants/routes";
 import LocalSearch from "@/components/search/LocalSearch";
 import HomeFilter from "@/components/filter/HomeFilter";
+import QuestionCard from "@/components/cards/QuestionCard";
 
 export const metadata: Metadata = {
   title: "Dev Overflow | Home",
@@ -46,7 +47,7 @@ const Home = async ({ searchParams }: SearchParams) => {
       <HomeFilter />
       <div className="flex flex-col gap-6 mt-10 w-full">
         {filteredQuestions.map((question) => (
-          <h1 key={question._id}>{question.title}</h1>
+          <QuestionCard key={question._id} question={question} />
         ))}
       </div>
     </>
