@@ -47,6 +47,7 @@
     "axios": "^1.10.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cm6-theme-basic-dark": "^0.2.0",
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.6.0",
@@ -91,6 +92,7 @@
     "eslint-plugin-unicorn": "^60.0.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.11",
+    "tailwindcss-animate": "^1.0.7",
     "tw-animate-css": "^1.3.6",
     "typescript": "^5"
   },
