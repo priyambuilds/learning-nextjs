@@ -27,7 +27,7 @@ const corsHeaders = {
 async function handleAuthRequest(
   request: NextRequest,
   context: { params: { nextauth: string[] } },
-  method: "GET" | "POST"
+  method: "GET" | "POST",
 ) {
   const startTime = Date.now();
   const userAgent = request.headers.get("user-agent") || "unknown";
@@ -130,7 +130,7 @@ async function handleAuthRequest(
 // ---- GET handler ----
 export async function GET(
   request: NextRequest,
-  context: { params: { nextauth: string[] } }
+  context: { params: { nextauth: string[] } },
 ) {
   return handleAuthRequest(request, context, "GET");
 }
@@ -138,7 +138,7 @@ export async function GET(
 // ---- POST handler ----
 export async function POST(
   request: NextRequest,
-  context: { params: { nextauth: string[] } }
+  context: { params: { nextauth: string[] } },
 ) {
   return handleAuthRequest(request, context, "POST");
 }

@@ -45,7 +45,7 @@ const HomeFilter = () => {
             `shadow-none px-6 py-3 rounded-lg capitalize body-medium`,
             active === item.value
               ? "bg-primary-100 text-primary-500 hover:bg-primary-100 dark:bg-dark-400 dark:text-primary-500"
-              : "bg-light-800 dark:bg-dark-300 hover:bg-light-800 dark:text-light-500 dark:hover:bg-dark-300"
+              : "bg-light-800 dark:bg-dark-300 hover:bg-light-800 dark:text-light-500 dark:hover:bg-dark-300",
           )}
         >
           {item.name}

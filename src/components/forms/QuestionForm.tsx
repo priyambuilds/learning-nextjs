@@ -39,7 +39,7 @@ export const QuestionForm = () => {
 
   const handleInputKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
-    field: { value: string[] }
+    field: { value: string[] },
   ) => {
     if (e.key === "Enter") {
       e.preventDefault();

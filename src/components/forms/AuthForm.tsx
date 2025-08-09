@@ -105,7 +105,7 @@ export default function AuthForm<TSchema extends AnyZodObject>({
         }
       } else {
         setSubmissionError(
-          result.message || "An error occurred. Please try again."
+          result.message || "An error occurred. Please try again.",
         );
         if (result.errors) {
           Object.entries(result.errors).forEach(([field, message]) => {

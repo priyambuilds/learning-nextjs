@@ -38,6 +38,6 @@ export const removeKeysFromUrlQuery = ({
       url: window.location.pathname,
       query: queryString,
     },
-    { skipNull: true }
+    { skipNull: true },
   );
 };

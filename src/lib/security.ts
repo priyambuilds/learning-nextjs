@@ -7,7 +7,7 @@ interface SecurityValidation {
 }
 
 export async function validateRequest(
-  request: NextRequest
+  request: NextRequest,
 ): Promise<SecurityValidation> {
   const userAgent = request.headers.get("user-agent");
   const origin = request.headers.get("origin");
@@ -67,7 +67,7 @@ export async function validateRequest(
 
   if (
     attackPatterns.some((pattern) =>
-      pathname.toLowerCase().includes(pattern.toLowerCase())
+      pathname.toLowerCase().includes(pattern.toLowerCase()),
     )
   ) {
     return { isValid: false, reason: "Malicious pattern detected" };

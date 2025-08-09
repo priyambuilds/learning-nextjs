@@ -21,7 +21,7 @@ const passwordValidator = z
   .regex(/^(?=.*\d)/, "Password must contain at least one number")
   .regex(
     /^(?=.*[@$!%*?&])/,
-    "Password must contain at least one special character (@$!%*?&)"
+    "Password must contain at least one special character (@$!%*?&)",
   );
 
 const nameValidator = z
@@ -31,7 +31,7 @@ const nameValidator = z
   .max(50, "Name cannot exceed 50 characters")
   .regex(
     /^[a-zA-Z\s'-]+$/,
-    "Name can only contain letters, spaces, apostrophes, and hyphens"
+    "Name can only contain letters, spaces, apostrophes, and hyphens",
   )
   .transform((name) => name.trim());
 
@@ -42,7 +42,7 @@ const usernameValidator = z
   .max(30, "Username cannot exceed 30 characters")
   .regex(
     /^[a-zA-Z0-9_-]+$/,
-    "Username can only contain letters, numbers, underscores, and hyphens"
+    "Username can only contain letters, numbers, underscores, and hyphens",
   )
   .regex(/^[a-zA-Z]/, "Username must start with a letter")
   .transform((username) => username.toLowerCase().trim());
@@ -65,7 +65,7 @@ const optionalUrlValidator = z
   .optional()
   .refine(
     (url) => !url || urlValidator.safeParse(url).success,
-    "Please enter a valid URL or leave empty"
+    "Please enter a valid URL or leave empty",
   );
 
 // ========================
@@ -187,7 +187,7 @@ export const UpdateProfileSchema = z.object({
     .optional()
     .refine(
       (url) => !url || url === "" || urlValidator.safeParse(url).success,
-      "Please enter a valid URL or leave empty"
+      "Please enter a valid URL or leave empty",
     ),
 });
 
@@ -218,13 +218,13 @@ export const AskQuestionSchema = z.object({
         .min(1, "Tag cannot be empty")
         .max(15, "Tag cannot exceed 15 characters")
         .regex(/^[a-zA-Z0-9-+#.]+$/, "Tag contains invalid characters")
-        .transform((tag) => tag.toLowerCase().trim())
+        .transform((tag) => tag.toLowerCase().trim()),
     )
     .min(1, "At least one tag is required")
     .max(5, "Maximum of 5 tags allowed")
     .refine(
       (tags) => new Set(tags).size === tags.length,
-      "Duplicate tags are not allowed"
+      "Duplicate tags are not allowed",
     ),
 });
 
@@ -423,7 +423,7 @@ export const sanitizeInput = (input: string): string => {
 };
 
 export const getPasswordStrength = (
-  password: string
+  password: string,
 ): { score: number; feedback: string[] } => {
   const feedback: string[] = [];
   let score = 0;
